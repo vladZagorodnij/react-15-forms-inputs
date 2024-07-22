@@ -1,41 +1,17 @@
-import {useState} from "react";
+import {useRef} from "react";
 
 export default function Login() {
-    const [enteredValues, setEnteredValues] = useState({
-        email: '',
-        password: '',
-    });
-
-    const [didEdit, setDidEdit] = useState({
-        email: false,
-        password: false,
-    });
-
-    const emailIsValid =
-        didEdit.email && !enteredValues.email.includes('@');
+    const email = useRef();
+    const password = useRef();
 
     function handleSubmit(event) {
         event.preventDefault();
-        console.log('Submitted');
-    }
 
-    function handleInputChange(identifier, value) {
-        setEnteredValues((prevValues) => ({
-            ...prevValues,
-            [identifier]: value,
-        }))
+        const enteredEmail = email.current.value;
+        const enteredPassword = password.current.value;
 
-        setDidEdit((prevState) => ({
-            ...prevState,
-            [identifier]: false
-        }))
-    }
-
-    function handleInputEdit(identifier) {
-        setDidEdit((prevState) => ({
-            ...prevState,
-            [identifier]: true
-        }))
+        console.log(enteredEmail);
+        console.log(enteredPassword);
     }
 
     return (
@@ -49,15 +25,8 @@ export default function Login() {
                         id="email"
                         type="email"
                         name="email"
-                        onBlur={() => {handleInputEdit('email')}}
-                        onChange={(event) => {
-                            handleInputChange('email', event.target.value)
-                        }}
-                        value={enteredValues.email}
+                        ref={email}
                     />
-                    <div className="control-error">
-                        {emailIsValid && <p>Please enter a valid Email address.</p>}
-                    </div>
                 </div>
 
                 <div className="control no-margin">
@@ -66,11 +35,7 @@ export default function Login() {
                         id="password"
                         type="password"
                         name="password"
-                        onBlur={() => {handleInputEdit('password')}}
-                        onChange={(event) => {
-                            handleInputChange('password', event.target.value)
-                        }}
-                        value={enteredValues.password}
+                        ref={password}
                     />
                 </div>
             </div>
